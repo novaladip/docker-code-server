@@ -20,6 +20,8 @@ services:
     labels:
       caddy_0: "code-server.commodore.qrqr.net"
       caddy_0.reverse_proxy: "{{upstreams 8443}}"  
+    networks:
+      - caddy  
 
 networks:
   caddy:
