@@ -14,28 +14,28 @@ ARG DEBIAN_FRONTEND="noninteractive"
 ENV HOME="/config"
 
 RUN \
-  echo "**** install runtime dependencies ****" &&
-  apt-get update &&
+  echo "**** install runtime dependencies ****" && \
+  apt-get update && \
   apt-get install -y \
     git \
     libatomic1 \
     nano \
     net-tools \
-    sudo &&
-  echo "**** install code-server ****" &&
-  if [ -z ${CODE_RELEASE+x} ]; then
-    CODE_RELEASE=$(curl -sX GET https://api.github.com/repos/novaladip/code-server/releases/latest |
-      awk '/tag_name/{print $4;exit}' FS='[""]' | sed 's|^v||')
-  fi &&
-  mkdir -p /app/code-server &&
+    sudo && \
+  echo "**** install code-server ****" && \
+  if [ -z ${CODE_RELEASE+x} ]; then \
+    CODE_RELEASE=$(curl -sX GET https://api.github.com/repos/novaladip/code-server/releases/latest \
+      | awk '/tag_name/{print $4;exit}' FS='[""]' | sed 's|^v||'); \
+  fi && \
+  mkdir -p /app/code-server && \
   curl -o \
     /tmp/code-server.tar.gz -L \
-    "https://github.com/novaladip/code-server/releases/download/v${CODE_RELEASE}/code-server-${CODE_RELEASE}-linux-amd64.tar.gz" &&
+    "https://github.com/novaladip/code-server/releases/download/v${CODE_RELEASE}/code-server-${CODE_RELEASE}-linux-amd64.tar.gz" && \
   tar xf /tmp/code-server.tar.gz -C \
-    /app/code-server --strip-components=1 &&
-  printf "Linuxserver.io version: ${VERSION}\nBuild-date: ${BUILD_DATE}" >/build_version &&
-  echo "**** clean up ****" &&
-  apt-get clean &&
+    /app/code-server --strip-components=1 && \
+  printf "Linuxserver.io version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version && \
+  echo "**** clean up ****" && \
+  apt-get clean && \
   rm -rf \
     /config/* \
     /tmp/* \
